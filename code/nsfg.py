@@ -107,7 +107,6 @@ def ValidatePregnum(resp, preg):
 
     return True
 
-
 def MakePregMap(df):
     """Make a map from caseid to list of preg indices.
 
