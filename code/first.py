@@ -147,6 +147,7 @@ def MakeComparison(firsts, others):
 def main(script):
     live, firsts, others = MakeFrames()
 
+
     MakeHists(live)
     PrintExtremes(live)
     MakeComparison(firsts, others)

@@ -7,6 +7,7 @@ License: GNU GPLv3 http://www.gnu.org/licenses/gpl.html
 
 from __future__ import print_function
 
+import math
 import sys
 from operator import itemgetter
 
@@ -21,7 +22,14 @@ def Mode(hist):
 
     returns: value from Hist
     """
-    return 0
+    modecount = -1
+    mode = 0
+    for val, freq in hist.Items():
+        if freq > modecount:
+            mode = val
+            modecount = freq
+
+    return mode
 
 
 def AllModes(hist):
@@ -31,7 +39,18 @@ def AllModes(hist):
 
     returns: iterator of value-freq pairs
     """
-    return []
+    return sorted(hist.Items(), key=itemgetter(1), reverse=True)
+
+def CohensEffectSize(group1, group2):
+    diff = group1.mean() - group2.mean()
+    var1 = group1.var()
+    var2 = group2.var()
+    n1, n2 = len(group1), len(group2)
+
+    pooled_var = (n1 * var1 + n2 * var2) / (n1 + n2)
+    d = diff / math.sqrt(pooled_var)
+    return d
+
 
 
 def main(script):
@@ -53,6 +72,10 @@ def main(script):
 
     for value, freq in modes[:5]:
         print(value, freq)
+
+    # test Cohen's Effect Size
+    weightD = CohensEffectSize(firsts.totalwgt_lb, others.totalwgt_lb)
+    print(weightD)
 
     print('%s: All tests passed.' % script)
 
